@@ -25,8 +25,7 @@ app.get('/', (req, res) => {
     res.json({success: true, message: 'welcome to backend zone!'});
 });
 
-app.post('/upload', multer().single('video'), (req, res) => {
-    console.log('Entro a hacer un post');
+app.post('/upload', multer().single('video.mp4'), (req, res) => {
     const video = req.file.buffer;
 
     const sql = 'INSERT INTO videos (thumb) SET ?';
