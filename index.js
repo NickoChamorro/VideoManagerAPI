@@ -2,11 +2,21 @@ const express = require('express');
 const multer = require('multer');
 const mysql = require('mysql');
 
+const PORTAPI = process.env.PORT || 8000;
+
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_USER = process.env.DB_USER || 'root';
+const DB_PASS = process.env.DB_PASS || 'Mysql';
+const DB_NAME = process.env.DB_NAME || 'videomanager';
+const DB_PORT = process.env.DB_PORT || 3306;
+const DIALECT = "mysql";
+
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Mysql',
-  database: 'videomanager'
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASS,
+  database: DB_NAME,
+  port: DB_PORT
 });
 
 const app = express();
@@ -30,6 +40,6 @@ app.post('/upload', multer().single('video'), (req, res) => {
     }); 
 });
 
-app.listen(8000, () => {
-  console.log('Server started on port 8000');
+app.listen(PORTAPI, () => {
+  console.log('Server started on port '+PORTAPI);
 });
