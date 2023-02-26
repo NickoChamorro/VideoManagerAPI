@@ -52,9 +52,20 @@ const VideosModel = db.define("videos",{
 }, { timestamps: false },
 );
 
-// CONTROLLERS
+// CONTROLLERS}
 const getMessage = async (req,res)=>{
     res.json({success: true, message: 'welcome to backend zone!'});
+};
+
+const getVideo = async (req, res)=>{
+    try{
+        const video = await VideosModel.findOne({
+            where:{idVideo:req.params.id}
+        })  
+        res.json(video)
+    } catch (error) {
+        res.json({message: error.message})
+    }
 };
 
 const insertVideo = async (req,res)=>{
@@ -70,6 +81,7 @@ const insertVideo = async (req,res)=>{
 const router = express.Router();
 
 router.get ("/", getMessage);
+router.get ("/:id", getVideo);
 router.post ("/", insertVideo);
 
 // MAIN FUNCTIONS
