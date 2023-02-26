@@ -48,7 +48,7 @@ app.use(function(req, res, next) {
 // MODELS
 const VideosModel = db.define("videos",{
     idVideo: {type:DataTypes.INTEGER,primaryKey:true},
-    hash:{type:DataTypes.BLOB},
+    thumb:{type:DataTypes.BLOB}
 }, { timestamps: false },
 );
 
