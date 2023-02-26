@@ -9,7 +9,7 @@ const DB_USER = process.env.DB_USER || 'root';
 const DB_PASS = process.env.DB_PASS || 'Mysql';
 const DB_NAME = process.env.DB_NAME || 'videomanager';
 const DB_PORT = process.env.DB_PORT || 3306;
-const DIALECT = "mysql";
+/* const DIALECT = "mysql"; */
 
 const connection = mysql.createConnection({
   host: DB_HOST,
@@ -25,18 +25,25 @@ app.get('/', (req, res) => {
     res.json({success: true, message: 'welcome to backend zone!'});
 });
 
-app.post('/upload', multer().single('video.mp4'), (req, res) => {
+app.post('/upload', upload.single('video'), (req, res) => {
     const video = req.file.buffer;
 
-    const sql = 'INSERT INTO videos (thumb) SET ?';
+    if (!video) {
+      const error = new Error('Error uploading the file')
+      res.json({success: false, message: error})
+      return;
+    } 
+
+    res.json({success: true, message: 'The file arrived to backend.'})
+
+    /* const sql = 'INSERT INTO videos (thumb) SET ?';
     connection.query(sql, { video }, (err, result) => {
         if (err) {
-            console.error(err);
             res.sendStatus(500);
             return;
         }
         res.sendStatus(200);
-    }); 
+    });  */
 });
 
 app.listen(PORTAPI, () => {
