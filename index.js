@@ -2,9 +2,10 @@
 const multer = require('multer');
 const mysql = require('mysql'); */
 
-import express from "express"
-import cors from "cors" 
-import DataTypes from "sequelize";
+import express from "express";
+import cors from "cors";
+import {Sequelize, DataTypes} from "sequelize";
+
 /* import multer from "multer"; */
 
 
@@ -77,14 +78,14 @@ app.use("/videos",router);
 
 try {
     await db.authenticate()
-    console.log("conexion a la BD OK")
+    console.log("DB connection OK")
 } catch (error) {
-    console.log(`conexion fallida por el error ${error}`)
-}
+    console.log(`DB connection failed due to error ${error}`)
+};
 
 const port = PORTAPI //8000
 app.listen(port,()=>{
-  console.log(`Server started on port ${port}`)
+    console.log(`Server started on port ${port}`)
 })
 
 /* app.get('/', (req, res) => {
@@ -103,7 +104,7 @@ app.post('/upload', multer().single('video'), (req, res) => {
     } 
 
     res.json({success: true, message: 'The file arrived to backend.'})
-
+    
     const sql = 'INSERT INTO videos (thumb) SET ?';
     connection.query(sql, { video }, (err, result) => {
         if (err) {
