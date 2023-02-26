@@ -1,6 +1,14 @@
-const express = require('express');
+/* const express = require('express');
 const multer = require('multer');
-const mysql = require('mysql');
+const mysql = require('mysql'); */
+
+import express from "express"
+import cors from "cors" 
+import DataTypes from "sequelize";
+/* import multer from "multer"; */
+
+
+// DATABASE
 
 const PORTAPI = process.env.PORT || 8000;
 
@@ -9,22 +17,82 @@ const DB_USER = process.env.DB_USER || 'root';
 const DB_PASS = process.env.DB_PASS || 'Mysql';
 const DB_NAME = process.env.DB_NAME || 'videomanager';
 const DB_PORT = process.env.DB_PORT || 3306;
-/* const DIALECT = "mysql"; */
+const DIALECT = "mysql"; 
 
-const connection = mysql.createConnection({
+const db = new Sequelize (DB_NAME, DB_USER, DB_PASS,{  
+  host: DB_HOST, 
+  dialect: DIALECT, 
+  port: DB_PORT 
+});
+
+/* const connection = mysql.createConnection({
   host: DB_HOST,
   user: DB_USER,
   password: DB_PASS,
   database: DB_NAME,
   port: DB_PORT
-});
+}); */
 
+// MAIN CONFIG
 const app = express();
+app.use(cors());
+app.use (express.json());
 
-app.get('/', (req, res) => {
-    res.json({success: true, message: 'welcome to backend zone!'});
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
 
+// MODELS
+const VideosModel = db.define("videos",{
+    idVideo: {type:DataTypes.INTEGER,primaryKey:true},
+    hash:{type:DataTypes.BLOB},
+}, { timestamps: false },
+);
+
+// CONTROLLERS
+const getMessage = async (req,res)=>{
+    res.json({success: true, message: 'welcome to backend zone!'});
+};
+
+const insertVideo = async (req,res)=>{
+  try {
+      await VideosModel.create (req.body)
+      res.json ({message: "Video successfully uploaded."})
+  } catch (error) {
+      res.json ({message:error.message})
+  }
+};
+
+// ROUTES
+const router = express.Router();
+
+router.get ("/", getMessage);
+router.post ("/", insertVideo);
+
+// MAIN FUNCTIONS
+
+app.use("/videos",router); 
+
+try {
+    await db.authenticate()
+    console.log("conexion a la BD OK")
+} catch (error) {
+    console.log(`conexion fallida por el error ${error}`)
+}
+
+const port = PORTAPI //8000
+app.listen(port,()=>{
+  console.log(`Server started on port ${port}`)
+})
+
+/* app.get('/', (req, res) => {
+  res.json({success: true, message: 'welcome to backend zone!'});
+}); 
+*/
+
+/*
 app.post('/upload', multer().single('video'), (req, res) => {
     const video = req.file; //req.file.buffer
 
@@ -36,16 +104,14 @@ app.post('/upload', multer().single('video'), (req, res) => {
 
     res.json({success: true, message: 'The file arrived to backend.'})
 
-    /* const sql = 'INSERT INTO videos (thumb) SET ?';
+    const sql = 'INSERT INTO videos (thumb) SET ?';
     connection.query(sql, { video }, (err, result) => {
         if (err) {
             res.sendStatus(500);
             return;
         }
         res.sendStatus(200);
-    });  */
+    });  
 });
+*/
 
-app.listen(PORTAPI, () => {
-  console.log('Server started on port '+PORTAPI);
-});
