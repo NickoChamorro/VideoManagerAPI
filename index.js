@@ -25,8 +25,8 @@ app.get('/', (req, res) => {
     res.json({success: true, message: 'welcome to backend zone!'});
 });
 
-app.post('/upload', upload.single('video'), (req, res) => {
-    const video = req.file.buffer;
+app.post('/upload', multer().single('video'), (req, res) => {
+    const video = req.file; //req.file.buffer
 
     if (!video) {
       const error = new Error('Error uploading the file')
