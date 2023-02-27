@@ -63,7 +63,7 @@ const upload = multer({ dest: 'store/' });
 
 app.post('/upload', upload.single('video'), async (req, res) => {
     try {
-        const { originalname, size, mimetype, filename } = req.file;
+        const { originalname, size, mimetype, filename } = req.body; //req.file
 
         const videoInfo = await VIDEO.create({
             name: originalname,
