@@ -15,7 +15,7 @@ const DB_NAME = process.env.DB_NAME || 'videomanager';
 const DB_PORT = process.env.DB_PORT || 3306;
 const DIALECT = "mysql"; 
 
-const sequalize = new Sequelize (DB_NAME, DB_USER, DB_PASS,{  
+const sequelize = new Sequelize (DB_NAME, DB_USER, DB_PASS,{  
   host: DB_HOST, 
   dialect: DIALECT, 
   port: DB_PORT 
