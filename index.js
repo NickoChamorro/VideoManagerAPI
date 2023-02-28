@@ -53,13 +53,12 @@ app.use(cors());
 /* app.use(express.json()); */
 
 // CONTROLLER
-
 const getMessage = async (req, res)=>{
-
+    res.json({success: true, message: 'welcome to backend zone!'});
 }
 
 const getVideo = async (req, res)=>{
-    
+
 }
 
 const uploadVideo = async (req, res)=>{
@@ -79,7 +78,7 @@ const uploadVideo = async (req, res)=>{
         .json({ success: false, message: 'server error while uploading video' });
     }    
 
-}      
+};
 
 // ROUTES
 const storage = multer.diskStorage({
