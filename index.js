@@ -54,6 +54,14 @@ app.use(cors());
 
 // CONTROLLER
 
+const getMessage = async (req, res)=>{
+
+}
+
+const getVideo = async (req, res)=>{
+    
+}
+
 const uploadVideo = async (req, res)=>{
     const { video } = req;
     if (!video)
