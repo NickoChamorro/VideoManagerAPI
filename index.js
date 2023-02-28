@@ -62,7 +62,8 @@ const getVideo = async (req, res)=>{
 }
 
 const uploadVideo = async (req, res)=>{
-    const { video } = req;
+    console.log(`llega a uploadVideo`);
+    const { video } = req;    
     if (!video)
         return res
         .status(401)
