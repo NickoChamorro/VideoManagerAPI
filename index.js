@@ -54,6 +54,7 @@ app.use(cors());
 
 // CONTROLLER
 const getMessage = async (req, res)=>{
+    console.log(`llega a getMessage`);
     res.json({success: true, message: 'welcome to backend zone!'});
 }
 
@@ -92,15 +93,15 @@ const storage = multer.diskStorage({
     }
 });
 
-const fileFilter = (req, file, cb) => {
+/* const fileFilter = (req, file, cb) => {
     if (file.mimetype.startsWith('video')) {
         cb(null, true);
     } else {
         cb('invalid video file!', false);
     }
-};
+}; */
 
-const uploads = multer({ storage, fileFilter });
+const uploads = multer({ storage: storage });
 
 const router = express.Router();
 
