@@ -69,8 +69,8 @@ const uploadVideo = async (req, res)=>{
         .json({ success: false, message: "video didn't reach the backend" });
     
     try {
-        const { originalname, size, mimetype, filename } = req.body;
-        await VIDEO.create (req.body)
+        /* const { originalname, size, mimetype, filename } = req.body;
+        await VIDEO.create (req.body) */
         res.json ({message: "Video successfully uploaded."})
     } catch (error) {
         res
@@ -83,7 +83,7 @@ const uploadVideo = async (req, res)=>{
 // ROUTES
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '/store')
+        cb(null, './store')
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Math.round(Math.random() * 1E9)
