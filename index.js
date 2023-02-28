@@ -88,7 +88,7 @@ const uploadVideo = async (req, res)=>{
 };
 
 // ROUTES
-const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './store')
     },
@@ -96,7 +96,9 @@ const storage = multer.diskStorage({
         const uniqueSuffix = Math.round(Math.random() * 1E9)
         cb(null, file.fieldname + '-' + uniqueSuffix)
     }
-});
+}); */
+
+const storage = multer.memoryStorage();
 
 /* const fileFilter = (req, file, cb) => {
     if (file.mimetype.startsWith('video')) {
