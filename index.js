@@ -65,16 +65,21 @@ const getVideo = async (req, res)=>{
 const uploadVideo = async (req, res)=>{
     console.log(`llega a uploadVideo`);
     const { video } = req;    
-    if (!video)
+    if (!video){
+        console.log(`no llega video`);
         return res
         .status(401)
         .json({ success: false, message: "video didn't reach the backend" });
+    }
+        
     
     try {
+        console.log(`entra al try`);
         /* const { originalname, size, mimetype, filename } = req.body;
         await VIDEO.create (req.body) */
         res.json ({message: "Video successfully uploaded."})
     } catch (error) {
+        console.log(`entra al catch`);
         res
         .status(500)
         .json({ success: false, message: 'server error while uploading video' });
