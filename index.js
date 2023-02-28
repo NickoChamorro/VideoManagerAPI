@@ -52,13 +52,59 @@ const app = express();
 app.use(cors());
 /* app.use(express.json()); */
 
-/* app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-}); */
+// CONTROLLER
+
+const uploadVideo = async (req, res)=>{
+    const { video } = req;
+    if (!video)
+        return res
+        .status(401)
+        .json({ success: false, message: "video didn't reach the backend" });
+    
+    try {
+        const { originalname, size, mimetype, filename } = req.body;
+        await VIDEO.create (req.body)
+        res.json ({message: "Video successfully uploaded."})
+    } catch (error) {
+        res
+        .status(500)
+        .json({ success: false, message: 'server error while uploading video' });
+    }    
+
+}      
 
 // ROUTES
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, '/store')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Math.round(Math.random() * 1E9)
+        cb(null, file.fieldname + '-' + uniqueSuffix)
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype.startsWith('video')) {
+        cb(null, true);
+    } else {
+        cb('invalid video file!', false);
+    }
+};
+
+const uploads = multer({ storage, fileFilter });
+
+const router = express.Router();
+
+router.get ("/", getMessage);
+router.get ("/:id", getVideo);
+router.post('/upload', uploads.single('video'), uploadVideo );
+
+// MAIN FUNCTIONS
+
+app.use("/videos",router); 
+
+/*
 const upload = multer({ dest: 'store/' });
 
 app.post('/upload', upload.single('video'), async (req, res) => {
@@ -77,6 +123,7 @@ app.post('/upload', upload.single('video'), async (req, res) => {
         res.status(500).send('Error uploading the video');
     }
 });
+*/
 
 // OPEN PORT
 const port = PORTAPI //8000
