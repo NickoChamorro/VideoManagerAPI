@@ -63,21 +63,19 @@ const getVideo = async (req, res)=>{
 }
 
 const uploadVideo = async (req, res)=>{
-    console.log(`llega a uploadVideo`);
-    /* const { video } = req;   */  
-    const video = req.file;
-    if (!video){
+    console.log(`llega a uploadVideo`); 
+    const fileVideo = req.file;
+    if (!fileVideo){
         console.log(`no llega video`);
         return res
         .status(401)
         .json({ success: false, message: "video didn't reach the backend" });
     }
-        
-    
     try {
         console.log(`entra al try`);
-        /* const { originalname, size, mimetype, filename } = req.body;
-        await VIDEO.create (req.body) */
+        // Subir a cloudinary
+        /* const { originalname, size, mimetype, filename } = req.body; */
+        /* await VIDEO.create (req.body) */ 
         res.json ({message: "Video successfully uploaded."})
     } catch (error) {
         console.log(`entra al catch`);
