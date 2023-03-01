@@ -5,7 +5,6 @@ import multer from "multer";
 
 
 // DATABASE
-
 const PORTAPI = process.env.PORT || 8000;
 
 const DB_HOST = process.env.DB_HOST || 'localhost';
@@ -73,7 +72,34 @@ const uploadVideo = async (req, res)=>{
     }
     try {
         console.log(`entra al try`);
-        // Subir a cloudinary
+        const cloudinary = require('cloudinary').v2;
+
+        // Configuration 
+        cloudinary.config({
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            api_secret: process.env.CLOUDINARY_API_SECRET,
+        });
+
+        console.log(`body ${req.body}`);
+
+        // Upload
+        /* const res = await cloudinary.uploader.upload('https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg', {public_id: "olympic_flag"})
+
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            public_id: `${user._id}_profile`,
+            width: 500,
+            height: 500,
+            crop: 'fill',
+          }); */
+
+        res.then((data) => {
+            console.log(data);
+            console.log(data.secure_url);
+        }).catch((err) => {
+            console.log(err);
+        });
+
         /* const { originalname, size, mimetype, filename } = req.body; */
         /* await VIDEO.create (req.body) */ 
         res.json ({message: "Video successfully uploaded."})
