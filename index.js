@@ -46,6 +46,16 @@ const VIDEO = sequelize.define('videos', {
   
 sequelize.sync();
 
+// MEDIA STORE
+
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 // MAIN CONFIG
 const app = express();
 app.use(cors());
@@ -72,14 +82,7 @@ const uploadVideo = async (req, res)=>{
     }
     try {
         console.log(`entra al try`);
-        const cloudinary = require('cloudinary').v2;
-
-        // Configuration 
-        cloudinary.config({
-            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-            api_key: process.env.CLOUDINARY_API_KEY,
-            api_secret: process.env.CLOUDINARY_API_SECRET,
-        });
+        
 
         console.log(`body ${req.body}`);
 
@@ -91,7 +94,7 @@ const uploadVideo = async (req, res)=>{
             width: 500,
             height: 500,
             crop: 'fill',
-          }); */
+          }); 
 
         res.then((data) => {
             console.log(data);
@@ -99,6 +102,7 @@ const uploadVideo = async (req, res)=>{
         }).catch((err) => {
             console.log(err);
         });
+        */
 
         /* const { originalname, size, mimetype, filename } = req.body; */
         /* await VIDEO.create (req.body) */ 
