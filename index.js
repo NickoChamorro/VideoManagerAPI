@@ -104,14 +104,14 @@ const uploadVideo = async (req, res)=>{
             console.log(err);
         }); 
           
-        // Generate 
+        /* // Generate 
         const url = cloudinary.url(nameVideo, {
             width: 100,
             height: 150,
             Crop: 'fill'
         });
 
-        console.log(url);
+        console.log(url); */
 
         /*
         const result = await cloudinary.uploader.upload(req.file.path, {
