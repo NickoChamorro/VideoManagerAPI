@@ -85,7 +85,7 @@ const uploadVideo = async (req, res)=>{
         console.log(`entra al try`);
         
         /* console.log(`name ${fileVideo}`); */
-        console.log(`name ${storage._handleFile.req}`);
+        console.log(`name ${storage._handleFile.arguments}`);
 
         const nameVideo = 'video_'+ new Date();
         // Upload
