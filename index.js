@@ -3,7 +3,7 @@ import cors from "cors";
 import {Sequelize, DataTypes} from "sequelize";
 import multer from "multer";
 import { v2 as cloudinary } from 'cloudinary';
-import { DatauriParser } from 'datauri';
+import duri from 'datauri';
 
 
 // DATABASE
@@ -88,6 +88,7 @@ const uploadVideo = async (req, res)=>{
 
         /* const datauri = new Datauri();
         datauri.format('.mp4', req.file.buffer); */
+        const { DatauriParser } = duri;
         const parser = new DatauriParser();
         parser.format('.mp4', req.file.buffer);
 
