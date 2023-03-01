@@ -85,11 +85,26 @@ const uploadVideo = async (req, res)=>{
         console.log(`entra al try`);
         
         /* console.log(`name ${fileVideo}`); */
-        console.log(`name ${storage}`);
+        console.log(`name ${storage.buffer}`);
 
         const nameVideo = 'video_'+ new Date();
         // Upload
         /* const res = await cloudinary.uploader.upload(fileVideo, {public_id: nameVideo});  */
+
+       /*  res.then((data) => {
+            console.log(data);
+            console.log(data.secure_url);
+        }).catch((err) => {
+            console.log(err);
+        }); */
+          
+        // Generate 
+        /* const url = cloudinary.url(nameVideo, {
+            width: 100,
+            height: 150,
+            Crop: 'fill'
+        });
+ */
 
         /*
         const result = await cloudinary.uploader.upload(req.file.path, {
@@ -98,13 +113,6 @@ const uploadVideo = async (req, res)=>{
             height: 500,
             crop: 'fill',
           }); 
-
-        res.then((data) => {
-            console.log(data);
-            console.log(data.secure_url);
-        }).catch((err) => {
-            console.log(err);
-        });
         */
 
         /* const { originalname, size, mimetype, filename } = req.body; */
