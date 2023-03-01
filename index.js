@@ -3,7 +3,7 @@ import cors from "cors";
 import {Sequelize, DataTypes} from "sequelize";
 import multer from "multer";
 import { v2 as cloudinary } from 'cloudinary';
-import DatauriParser from 'datauri/parser';
+import DatauriParser from './node_modules/datauri/parser.js';
 
 
 // DATABASE
