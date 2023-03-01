@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import {Sequelize, DataTypes} from "sequelize";
 import multer from "multer";
+import { v2 as cloudinary } from 'cloudinary';
 
 
 // DATABASE
@@ -48,7 +49,7 @@ sequelize.sync();
 
 // MEDIA STORE
 
-const cloudinary = require('cloudinary').v2;
+/* const cloudinary = require('cloudinary').v2; */
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -83,7 +84,6 @@ const uploadVideo = async (req, res)=>{
     try {
         console.log(`entra al try`);
         
-
         console.log(`body ${req.body}`);
 
         // Upload
