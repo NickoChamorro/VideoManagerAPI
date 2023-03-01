@@ -84,11 +84,11 @@ const uploadVideo = async (req, res)=>{
     try {
         console.log(`entra al try`);
         
-        console.log(`name ${fileVideo.name}`);
+        console.log(`name ${fileVideo._id}`);
 
         const nameVideo = 'video_'+ new Date();
         // Upload
-        const res = await cloudinary.uploader.upload(`https://upload.wikimedia.org/wikipedia/commons/a/ae/${nameVideo}.mp4`, {public_id: nameVideo});
+        /* const res = await cloudinary.uploader.upload(`https://upload.wikimedia.org/wikipedia/commons/a/ae/${nameVideo}.mp4`, {public_id: nameVideo}); */
 
         /*
         const result = await cloudinary.uploader.upload(req.file.path, {
