@@ -2,19 +2,19 @@ import express from "express";
 import cors from "cors";
 import {Sequelize, DataTypes} from "sequelize";
 import multer from "multer";
-import { v2 as cloudinary } from 'cloudinary';
+/* import { v2 as cloudinary } from 'cloudinary'; */
 /* import DatauriParser from 'datauri/parser.js'; */
 
 
 // DATABASE
-const PORTAPI = process.env.PORT || 8000;
+const PORTAPI =  8000;  // process.env.PORT ||
 
-const DB_HOST = process.env.DB_HOST || 'localhost';
-const DB_USER = process.env.DB_USER || 'root';
-const DB_PASS = process.env.DB_PASS || 'Mysql';
-const DB_NAME = process.env.DB_NAME || 'videomanager';
-const DB_PORT = process.env.DB_PORT || 3306;
-const DIALECT = "mysql"; 
+const DB_HOST = 'localhost';    // process.env.DB_HOST || 
+const DB_USER = 'root';    // process.env.DB_USER ||
+const DB_PASS = 'Mysql';   // process.env.DB_PASS ||
+const DB_NAME = 'videomanager';    // process.env.DB_NAME ||
+const DB_PORT = 3306;  // process.env.DB_PORT ||
+const DIALECT = 'mysql'; 
 
 const sequelize = new Sequelize (DB_NAME, DB_USER, DB_PASS,{  
   host: DB_HOST, 
@@ -52,11 +52,11 @@ sequelize.sync();
 
 /* const cloudinary = require('cloudinary').v2; */
 
-cloudinary.config({
+/* cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+}); */
 
 // MAIN CONFIG
 const app = express();
@@ -75,7 +75,7 @@ const getVideo = async (req, res)=>{
 
 const uploadVideo = async (req, res)=>{
     console.log(`llega a uploadVideo`); 
-    const fileVideo = req.file;
+    const fileVideo = req.file.buffer;
     if (!fileVideo){
         console.log(`no llega video`);
         return res
@@ -85,6 +85,27 @@ const uploadVideo = async (req, res)=>{
     try {
         console.log(`entra al try`);
         
+        app.post('/upload', multer().single('video'), (req, res) => {
+            /* const video = req.file; //req.file.buffer
+        
+            if (!video) {
+              const error = new Error('Error uploading the file')
+              res.json({success: false, message: error})
+              return;
+            }  */
+        
+            res.json({success: true, message: 'The file arrived to backend.'})
+            
+            /* const sql = 'INSERT INTO videos (thumb) SET ?';
+            connection.query(sql, { video }, (err, result) => {
+                if (err) {
+                    res.sendStatus(500).json ({message: "Error saving video."});
+                    return;
+                }
+                res.sendStatus(200).json ({message: "Video successfully uploaded."});
+            });  */ 
+            res.json ({message: "Video successfully uploaded."})
+        });
 
         /* const datauri = new Datauri();
         datauri.format('.mp4', req.file.buffer); */
@@ -93,7 +114,7 @@ const uploadVideo = async (req, res)=>{
 
         /* console.log(`parser.content ${parser.content}`); */
 
-        const nameVideo = 'video_'+ new Date();
+        /* const nameVideo = 'video_'+ new Date(); */
         // Upload
         /* const res = await cloudinary.uploader.upload(parser.content, {public_id: nameVideo});  
 
@@ -124,7 +145,7 @@ const uploadVideo = async (req, res)=>{
 
         /* const { originalname, size, mimetype, filename } = req.body; */
         /* await VIDEO.create (req.body) */ 
-        res.json ({message: "Video successfully uploaded."})
+        
     } catch (error) {
         console.log(`entra al catch`);
         res
@@ -135,7 +156,7 @@ const uploadVideo = async (req, res)=>{
 };
 
 // ROUTES
-/* const storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './store')
     },
@@ -143,9 +164,9 @@ const uploadVideo = async (req, res)=>{
         const uniqueSuffix = Math.round(Math.random() * 1E9)
         cb(null, file.fieldname + '-' + uniqueSuffix)
     }
-}); */
+}); 
 
-const storage = multer.memoryStorage();
+/* const storage = multer.memoryStorage(); */
 
 /* const fileFilter = (req, file, cb) => {
     if (file.mimetype.startsWith('video')) {
