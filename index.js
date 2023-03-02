@@ -104,7 +104,6 @@ const uploadVideo = async (req, res)=>{
                 }
                 res.sendStatus(200).json ({message: "Video successfully uploaded."});
             });  */ 
-            res.json ({message: "Video successfully uploaded."})
         });
 
         /* const datauri = new Datauri();
