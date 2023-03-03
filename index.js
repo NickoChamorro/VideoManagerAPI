@@ -1,69 +1,42 @@
 import express from "express";
 import cors from "cors";
-import {Sequelize, DataTypes} from "sequelize";
 import multer from "multer";
-/* import { v2 as cloudinary } from 'cloudinary'; */
-/* import DatauriParser from 'datauri/parser.js'; */
+import mysql from 'mysql';
+import {Sequelize, DataTypes} from "sequelize"; 
 
-
-// DATABASE
-const PORTAPI =  8000;  // process.env.PORT ||
+// DATABASE // ----------------
+const PORTAPI =  443;  // process.env.PORT ||
 
 const DB_HOST = 'localhost';    // process.env.DB_HOST || 
-const DB_USER = 'root';    // process.env.DB_USER ||
-const DB_PASS = 'Mysql';   // process.env.DB_PASS ||
+const DB_USER = 'ubuntu';    // process.env.DB_USER ||
+const DB_PASS = 'soporte';   // process.env.DB_PASS ||
 const DB_NAME = 'videomanager';    // process.env.DB_NAME ||
 const DB_PORT = 3306;  // process.env.DB_PORT ||
 const DIALECT = 'mysql'; 
 
-const sequelize = new Sequelize (DB_NAME, DB_USER, DB_PASS,{  
-  host: DB_HOST, 
-  dialect: DIALECT, 
-  port: DB_PORT 
+// Creating connection
+let db = mysql.createConnection({
+    host: DB_HOST,
+    user: DB_USER,
+    password: DB_PASS,
+    database: DB_NAME,
+    port: DB_PORT
 });
 
-const VIDEO = sequelize.define('videos', {
-    idVideo: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false
-    },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    size: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    extension: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    path: {
-        type: DataTypes.STRING,
-        allowNull: false
+// Connect to MySQL server
+db.connect((err) => {
+    if (err) {
+        console.log("Database Connection Failed !", err);
+    } else {
+        console.log("Connected to Database");
     }
 });
-  
-sequelize.sync();
 
-// MEDIA STORE
-
-/* const cloudinary = require('cloudinary').v2; */
-
-/* cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-}); */
-
-// MAIN CONFIG
+// MAIN CONFIG // ----------------
 const app = express();
 app.use(cors());
-/* app.use(express.json()); */
 
-// CONTROLLER
+// CONTROLLER // ----------------
 const getMessage = async (req, res)=>{
     console.log(`llega a getMessage`);
     res.json({success: true, message: 'welcome to backend zone!'});
@@ -75,107 +48,78 @@ const getVideo = async (req, res)=>{
 
 const uploadVideo = async (req, res)=>{
     console.log(`llega a uploadVideo`); 
-    const fileVideo = req.file.buffer;
-    if (!fileVideo){
-        console.log(`no llega video`);
-        return res
-        .status(401)
-        .json({ success: false, message: "video didn't reach the backend" });
-    }
+    
     try {
         console.log(`entra al try`);
+        // Values to be inserted
+		let path = req.file.path;
+		let name = path.split('/').pop();
+        let size = 1;
+        let extension = 'mp4';
+
+        console.log(`path ${path} name ${name}`)
+
+        let query = `INSERT INTO videos (name, size, extension, path) VALUES (?, ?, ?, ?);`;
+    
+        // Creating queries
+        db.query(query, [name, size, extension, path], (err, rows) => {
+                if (err) throw err;
+                console.log("Row inserted with id = " + rows.insertId);
+            }
+        );
+
+        res.status(200).json ({success: true, message: "Video upload!"});    
+
+        /* await VIDEO.create({
+			name: name,
+			size: 1,
+			extension: '.mp4',
+			path: path
+		}) */    
         
-        app.post('/upload', multer().single('video'), (req, res) => {
-            /* const video = req.file; //req.file.buffer
+        /* const video = req.file; //req.file.buffer
         
-            if (!video) {
-              const error = new Error('Error uploading the file')
-              res.json({success: false, message: error})
-              return;
-            }  */
-        
-            res.json({success: true, message: 'The file arrived to backend.'})
-            
-            /* const sql = 'INSERT INTO videos (thumb) SET ?';
-            connection.query(sql, { video }, (err, result) => {
-                if (err) {
-                    res.sendStatus(500).json ({message: "Error saving video."});
-                    return;
-                }
-                res.sendStatus(200).json ({message: "Video successfully uploaded."});
-            });  */ 
-        });
-
-        /* const datauri = new Datauri();
-        datauri.format('.mp4', req.file.buffer); */
-        /* const parser = new DatauriParser();
-        parser.format('.mp4', req.file.buffer); */
-
-        /* console.log(`parser.content ${parser.content}`); */
-
-        /* const nameVideo = 'video_'+ new Date(); */
-        // Upload
-        /* const res = await cloudinary.uploader.upload(parser.content, {public_id: nameVideo});  
-
-        res.then((data) => {
-            console.log(data);
-            console.log(data.secure_url);
-        }).catch((err) => {
-            console.log(err);
-        });  */
-          
-        /* // Generate 
-        const url = cloudinary.url(nameVideo, {
-            width: 100,
-            height: 150,
-            Crop: 'fill'
-        });
-
-        console.log(url); */
-
-        /*
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            public_id: `${user._id}_profile`,
-            width: 500,
-            height: 500,
-            crop: 'fill',
-          }); 
-        */
+        if (!video) {
+            const error = new Error('Error uploading the file')
+            res.json({success: false, message: error})
+            return;
+        }  
+        res.json({success: true, message: 'The file arrived to backend.'}) 
+        */    
+        /*const sql = 'INSERT INTO videos (thumb) SET ?';
+		connection.query(sql, { video }, (err, result) => {
+            if (err) {
+                res.sendStatus(500).json ({message: "Error saving video."});
+                return;
+            }
+            res.sendStatus(200).json ({message: "Video successfully uploaded."});
+		});*/
+		
 
         /* const { originalname, size, mimetype, filename } = req.body; */
-        /* await VIDEO.create (req.body) */ 
+        /* await VIDEO.create (req.body) */
         
     } catch (error) {
         console.log(`entra al catch`);
         res
         .status(500)
-        .json({ success: false, message: 'server error while uploading video' });
+        .json({ success: false, message: error.message });
     }    
-
 };
 
-// ROUTES
+// ROUTES // ----------------
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './store')
+        cb(null, '../../var/www/videomanager/store/') 
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.mp4')
     }
-}); 
-
-/* const storage = multer.memoryStorage(); */
-
-/* const fileFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('video')) {
-        cb(null, true);
-    } else {
-        cb('invalid video file!', false);
-    }
-}; */
+});
 
 const uploads = multer({ storage: storage });
+/*const uploads = multer({ dest: './store/' });*/
 
 const router = express.Router();
 
@@ -183,34 +127,11 @@ router.get ("/", getMessage);
 router.get ("/:id", getVideo);
 router.post('/upload', uploads.single('video'), uploadVideo );
 
-// MAIN FUNCTIONS
-
+// MAIN FUNCTIONS // ----------------
 app.use("/videos",router); 
 
-/*
-const upload = multer({ dest: 'store/' });
-
-app.post('/upload', upload.single('video'), async (req, res) => {
-    try {
-        const { originalname, size, mimetype, filename } = req.body.video; // req.file
-
-        const videoInfo = await VIDEO.create({
-            name: originalname,
-            size,
-            extension: mimetype,
-            path: `store/${filename}`
-        });
-
-        res.status(200).send(videoInfo);
-    } catch (error) {
-        res.status(500).send('Error uploading the video');
-    }
-});
-*/
-
-// OPEN PORT
+// OPEN PORT // ----------------
 const port = PORTAPI //8000
 app.listen(port,()=>{
     console.log(`Server started on port ${port}`)
 });
-

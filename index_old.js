@@ -34,6 +34,40 @@ const db = new Sequelize (DB_NAME, DB_USER, DB_PASS,{
   port: DB_PORT
 }); */
 
+/*
+const sequelize = new Sequelize (DB_NAME, DB_USER, DB_PASS,{  
+  host: DB_HOST, 
+  dialect: DIALECT, 
+  port: DB_PORT 
+});
+
+const VIDEO = sequelize.define('videos', {
+    idVideo: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    size: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    extension: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    path: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+});
+  
+sequelize.sync();
+*/
+
 // MAIN CONFIG
 const app = express();
 app.use(cors());
@@ -128,3 +162,25 @@ app.post('/upload', multer().single('video'), (req, res) => {
 });
 */
 
+/*
+const upload = multer({ dest: 'store/' });
+
+app.post('/upload', upload.single('video'), async (req, res) => {
+    try {
+        const { originalname, size, mimetype, filename } = req.body.video; // req.file
+
+        const videoInfo = await VIDEO.create({
+            name: originalname,
+            size,
+            extension: mimetype,
+            path: `store/${filename}`
+        });
+
+        res.status(200).send(videoInfo);
+    } catch (error) {
+        res.status(500).send('Error uploading the video');
+    }
+});
+*/
+
+    
