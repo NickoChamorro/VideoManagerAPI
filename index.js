@@ -84,7 +84,8 @@ const uploadVideo = async (req, res)=>{
         // Creating queries
         db.query(query, [name, size, extension, path], (err, result) => {
                 if (err) throw err;
-                console.log("Row inserted with id = " + result.insertId);
+                console.log("No explotó donde antes");
+                /* console.log("Row inserted with id = " + result.insertId); */
                 /*let messageRes = "Video upload!"+result.insertId;
                 res.status(200).json ({success: true, message: messageRes}); */
             }
@@ -146,8 +147,8 @@ const uploads = multer({ storage: storage });
 const router = express.Router();
 
 router.get ("/", getMessage);
-router.get ("/:id", getVideo);
-router.get ("/all", getAllVideos)
+/* router.get ("/:id", getVideo);
+router.get ("/all", getAllVideos) */
 router.post('/upload', uploads.single('video'), uploadVideo );
 
 // MAIN FUNCTIONS // ----------------
