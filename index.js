@@ -88,7 +88,7 @@ const uploadVideo = async (req, res)=>{
             }
         );
 
-        res.status(200).json ({success: true, message: "Video upload!"});    
+        res.status(200).json ({success: true, message: "Video upload!", id: rows.insertId});    
 
         /* await VIDEO.create({
 			name: name,
