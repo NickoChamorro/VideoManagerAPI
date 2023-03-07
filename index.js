@@ -76,7 +76,6 @@ const uploadVideo = async (req, res)=>{
 		let name = path.split('/').pop();
         let size = 1;
         let extension = 'mp4';
-        const idResult = null;
         console.log(`path ${path} name ${name}`)
 
         let query = `INSERT INTO videos (name, size, extension, path) VALUES (?, ?, ?, ?);`;
@@ -85,11 +84,9 @@ const uploadVideo = async (req, res)=>{
         db.query(query, [name, size, extension, path], (err, result) => {
                 if (err) throw err;
                 console.log("Row inserted with id = " + result.insertId); 
-                idResult = result.insertId;
+                res.status(200).json ({success: true, message: "Video Upload!", id: idResult});
             }
         );
-            
-        res.status(200).json ({success: true, message: "Video Upload!", id: idResult});    
 
         /* await VIDEO.create({
 			name: name,
