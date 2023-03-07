@@ -85,12 +85,10 @@ const uploadVideo = async (req, res)=>{
         db.query(query, [name, size, extension, path], (err, result) => {
                 if (err) throw err;
                 console.log("Row inserted with id = " + result.insertId); 
-                /*let messageRes = "Video upload!"+result.insertId;
-                res.status(200).json ({success: true, message: messageRes}); */
             }
         );
 
-        res.status(200).json ({success: true, message: "Video Upload!"});    
+        res.status(200).json ({success: true, message: "Video Upload!", id: result.insertId});    
 
         /* await VIDEO.create({
 			name: name,
