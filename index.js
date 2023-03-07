@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import multer from "multer";
 import mysql from 'mysql';
-import {Sequelize, DataTypes} from "sequelize"; 
+/* import {Sequelize, DataTypes} from "sequelize"; */ 
 
 // DATABASE // ----------------
 const PORTAPI =  443;  // process.env.PORT ||
@@ -43,7 +43,27 @@ const getMessage = async (req, res)=>{
 }
 
 const getVideo = async (req, res)=>{
+    console.log(`llega a getVideo`);
+    let query = `SELECT * FROM videos where idVideo = ?;`;
+    
+    // Creating queries
+    db.query(query, [req.params.id],(err, rows) => {
+            if (err) throw err;
+            console.log("Select video:"+req.params.id);
+        }
+    );
+}
 
+const getAllVideos = async (req, res)=>{
+    console.log(`llega a getAllVideos`); 
+    let query = `SELECT * FROM videos;`;
+    
+    // Creating queries
+    db.query(query, (err, rows) => {
+            if (err) throw err;
+            console.log("Select all videos");
+        }
+    );
 }
 
 const uploadVideo = async (req, res)=>{
@@ -125,6 +145,7 @@ const router = express.Router();
 
 router.get ("/", getMessage);
 router.get ("/:id", getVideo);
+router.get ("/all", getAllVideos)
 router.post('/upload', uploads.single('video'), uploadVideo );
 
 // MAIN FUNCTIONS // ----------------
