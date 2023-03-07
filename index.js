@@ -82,15 +82,15 @@ const uploadVideo = async (req, res)=>{
         let query = `INSERT INTO videos (name, size, extension, path) VALUES (?, ?, ?, ?);`;
     
         // Creating queries
-        db.query(query, [name, size, extension, path], (err, rows) => {
+        db.query(query, [name, size, extension, path], (err, result) => {
                 if (err) throw err;
-                console.log("Row inserted with id = " + rows.insertId);
+                console.log("Row inserted with id = " + result.insertId);
+                /*let messageRes = "Video upload!"+result.insertId;
+                res.status(200).json ({success: true, message: messageRes}); */
             }
         );
 
-        let messageRes = "Video upload!"+insertedId;
-
-        res.status(200).json ({success: true, message: messageRes});    
+        res.status(200).json ({success: true, message: "Video Upload!"});    
 
         /* await VIDEO.create({
 			name: name,
