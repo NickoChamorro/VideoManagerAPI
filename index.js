@@ -57,7 +57,7 @@ const getVideo = async (req, res)=>{
 
 const getLastVideo = async (req, res)=>{
     console.log(`llega a getLastVideo`); 
-    let query = `SELECT * FROM videos order by idVideo desc limit 1;`;
+    let query = 'SELECT * FROM videos order by idVideo desc limit 1;';
     
     // Creating queries
     db.query(query, (err, rows) => {
@@ -70,7 +70,7 @@ const getLastVideo = async (req, res)=>{
 
 const getAllVideos = async (req, res)=>{
     console.log(`llega a getAllVideos`); 
-    let query = `SELECT * FROM videos;`;
+    let query = 'SELECT * FROM videos;';
     
     // Creating queries
     db.query(query, (err, rows) => {
