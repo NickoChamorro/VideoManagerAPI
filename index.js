@@ -60,10 +60,10 @@ const getLastVideo = async (req, res)=>{
     let query = `SELECT * FROM videos order by idVideo desc limit 1;`;
     
     // Creating queries
-    db.query(query, function(err, rows, fields) {
+    db.query(query, (err, rows) => {
             if (err) throw err;
             console.log("Select last video");
-            res.json(rows); 
+            res.sendStatus(200).json(rows); 
         }
     );
 }
@@ -73,10 +73,10 @@ const getAllVideos = async (req, res)=>{
     let query = `SELECT * FROM videos;`;
     
     // Creating queries
-    db.query(query, function(err, rows, fields) {
+    db.query(query, (err, rows) => {
             if (err) throw err;
-            console.log("Select all videos");
-            res.json(rows); 
+            console.log("Select all videos");            
+            res.sendStatus(200).json(rows); 
         }
     );
 }
@@ -157,10 +157,10 @@ const uploads = multer({ storage: storage });
 
 const router = express.Router();
 
-router.get ("/", getMessage);
-router.get ("/:id", getVideo);
-router.get ("/last", getLastVideo);
-router.get ("/all", getAllVideos);
+router.get ('/', getMessage);
+router.get ('/:id', getVideo);
+router.get ('/last', getLastVideo);
+router.get ('/all', getAllVideos);
 router.post('/upload', uploads.single('video'), uploadVideo );
 
 // MAIN FUNCTIONS // ----------------
