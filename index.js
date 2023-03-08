@@ -63,7 +63,7 @@ const getLastVideo = async (req, res)=>{
     db.query(query, (err, rows) => {
             if (err) throw err;
             console.log("Select last video");
-            res.sendStatus(200).json(rows); 
+            res.json(rows); 
         }
     );
 }
@@ -76,7 +76,7 @@ const getAllVideos = async (req, res)=>{
     db.query(query, (err, rows) => {
             if (err) throw err;
             console.log("Select all videos");            
-            res.sendStatus(200).json(rows); 
+            res.json(rows); 
         }
     );
 }
