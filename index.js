@@ -50,6 +50,7 @@ const getVideo = async (req, res)=>{
     db.query(query, [req.params.id],(err, rows) => {
             if (err) throw err;
             console.log("Select video:"+req.params.id);
+            res.json(rows); 
         }
     );
 }
@@ -62,6 +63,7 @@ const getLastVideo = async (req, res)=>{
     db.query(query, (err, rows) => {
             if (err) throw err;
             console.log("Select last video");
+            res.json(rows); 
         }
     );
 }
@@ -74,6 +76,7 @@ const getAllVideos = async (req, res)=>{
     db.query(query, (err, rows) => {
             if (err) throw err;
             console.log("Select all videos");
+            res.json(rows); 
         }
     );
 }
