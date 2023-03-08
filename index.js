@@ -158,7 +158,7 @@ const uploads = multer({ storage: storage });
 const router = express.Router();
 
 router.get ('/', getMessage);
-router.get ('/:id', getVideo);
+router.get ('/video/:id', getVideo);
 router.get ('/last', getLastVideo);
 router.get ('/all', getAllVideos);
 router.post('/upload', uploads.single('video'), uploadVideo );
